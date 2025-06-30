@@ -1,0 +1,16 @@
+.github-collections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  
+    .controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+  
+    .ag-theme-alpine {
+      width: 100%;
+      height: 100%;
+    }
+  }

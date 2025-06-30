@@ -1,0 +1,63 @@
+<mat-card class="github-connect-card">
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <div class="github-header d-space-between">
+        @if (!isConnected) {
+        <div class="github-header">
+          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="40px"
+            height="40px">
+          <span class="github-title">Github</span>
+        </div>
+        } @else {
+        <div class="github-header">
+          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="40px"
+            height="40px">
+          <span class="github-title">Github</span>
+          <mat-icon class="status-icon success">check_circle</mat-icon>
+          <mat-icon class="sync-icon" [matTooltip]="'Connected at: ' + (createdAt | date:'fullDate') + ' | ' + (createdAt | date:'shortTime')">history</mat-icon>
+        </div>
+        <div class="github-header">
+          <div class="d-flex">
+            <span class="admin-value">{{ admin }}</span> | 
+            <ng-container *ngIf="syncInProgress; else lastSyncedTemplate">
+              <div class="d-flex">Sync In-progress <mat-spinner diameter="20"></mat-spinner></div>
+            </ng-container>
+            <ng-template #lastSyncedTemplate>
+                 <span *ngIf="lastSynced" class="last-synced-label">Last Synced: {{ lastSynced | date:'fullDate' }} at {{ lastSynced | date:'shortTime' }}</span> | 
+            </ng-template>
+          </div>
+          <div *ngIf="syncType && !syncInProgress" class="sync-type">Sync Type: <b>{{ syncType }}</b></div>
+        </div>
+        }
+      </div>
+    </mat-expansion-panel-header>
+    <div class="github-content">
+      @if (!isConnected) {
+      <button mat-flat-button color="primary" (click)="connect()">Connect</button>
+      <div class="github-subtitle">
+        Connect Sredio to Github
+      </div>
+      } @else {
+        <div class="d-flex remove-btn align-items-end">
+          <button mat-flat-button color="primary" [disabled]="syncInProgress" class="sync-btn" (click)="sync()">
+            Sync
+            <mat-icon>sync</mat-icon>
+          </button>
+          <button mat-flat-button color="primary" class="remove-btn" (click)="disconnet()">
+            Remove
+            <mat-icon>visibility_off</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      AG Grid Data
+    </mat-expansion-panel-header>
+    <app-github-collections *ngIf="syncCompleted"></app-github-collections>
+    <div *ngIf="!syncCompleted" class="no-data">
+      <p>No data available. Please connect and sync to view data.</p>
+    </div>
+  </mat-expansion-panel>
+</mat-card>
